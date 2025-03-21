@@ -39,7 +39,7 @@ router.get("/", protectRoute, async (req, res) => {
     const skip = (page - 1) * limit;
 
     const books = await Book.find()
-      .populate("author", "name email profileImage")
+      .populate("author", "username email profileImage")
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
