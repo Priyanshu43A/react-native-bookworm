@@ -60,7 +60,7 @@ router.get("/", protectRoute, async (req, res) => {
 
 router.delete("/:id", protectRoute, async (req, res) => {
   try {
-    const book = Book.findById(req.params.id);
+    const book = await Book.findById(req.params.id);
     if (!book) {
       return res.status(404).json({ error: "Book not found!" });
     }
