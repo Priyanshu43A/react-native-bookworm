@@ -54,6 +54,7 @@ router.post("/register", async (req, res) => {
         username: newUser.username,
         email: newUser.email,
         profileImage: newUser.profileImage,
+        createdAt: newUser.createdAt,
       },
     });
   } catch (error) {
@@ -65,10 +66,10 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (!email ||!password) {
+    if (!email || !password) {
       return res.status(400).json({ msg: "Not all fields have been entered." });
     }
-    //check if user exists 
+    //check if user exists
     const user = await User.findOne({ email: email });
     if (!user) {
       return res.status(400).json({ msg: "Invalid credientals" });
@@ -80,7 +81,18 @@ router.post("/login", async (req, res) => {
     }
     //generate token
     const token = generateToken(user._id);
-    res.status(200).json({ token, user: { id: user._id, username: user.username, email: user.email, profileImage: user.profileImage } });
+    res
+      .status(200)
+      .json({
+        token,
+        user: {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          profileImage: user.profileImage,
+          createdAt: user.createdAt,
+        },
+      });
   } catch (error) {
     res.status(500).json({ error: error.message || "Internal server error!" });
     console.error(error);
